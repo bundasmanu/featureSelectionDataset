@@ -1,0 +1,100 @@
+2019-10-21 19:00:08,759 - GEOparse - INFO - Downloading ftp://ftp.ncbi.nlm.nih.gov/geo/datasets/GDSnnn/GDS360/soft/GDS360.soft.gz to ./GDS360.soft.gz
+2019-10-21 19:00:12,554 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:01:26,485 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:01:26,485 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:04:55,216 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:04:55,217 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:05:15,189 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:05:15,189 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:07:18,153 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:07:18,154 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:13:23,082 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:13:23,082 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:13:53,572 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:13:53,573 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:14:23,875 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:14:23,876 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 19:18:01,893 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 19:18:01,893 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 20:55:10,276 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 20:55:10,277 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 20:56:35,367 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 20:56:35,367 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 20:58:36,388 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 20:58:36,388 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 20:59:23,354 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 20:59:23,355 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 22:06:15,723 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 22:06:15,724 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 22:06:34,520 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 22:06:34,521 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 22:06:44,850 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 22:06:44,850 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 22:07:48,644 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 22:07:48,644 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:01:57,840 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:01:57,840 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:02:34,532 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:02:34,533 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:03:05,254 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:03:05,254 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:03:26,037 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:03:26,038 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:10:27,941 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:10:27,941 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:11:16,762 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:11:16,763 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:11:57,152 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:11:57,153 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:13:54,834 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:13:54,834 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:14:11,764 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:14:11,764 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:15:43,801 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:15:43,801 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:16:48,131 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:16:48,132 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:30:37,465 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:30:37,466 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:35:55,183 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:35:55,184 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:36:22,054 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:36:22,054 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:36:33,415 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:36:33,416 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:36:49,880 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:36:49,880 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:39:51,327 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:39:51,327 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:40:23,023 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:40:23,023 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:41:49,449 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:41:49,449 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:44:44,514 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:44:44,514 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:45:08,100 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:45:08,101 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:54:55,832 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:54:55,832 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-21 23:58:50,332 - GEOparse - INFO - File already exist: using local version.
+2019-10-21 23:58:50,332 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:08:05,256 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:08:05,256 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:10:32,665 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:10:32,665 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:11:41,729 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:11:41,729 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:14:40,829 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:14:40,830 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:15:02,328 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:15:02,329 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:16:21,987 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:16:21,987 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:17:09,623 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:17:09,624 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:18:06,622 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:18:06,622 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:18:37,890 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:18:37,890 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 00:18:51,154 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 00:18:51,154 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
