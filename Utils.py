@@ -6,7 +6,11 @@ from io import StringIO
 from collections import OrderedDict
 from Orange.data import Table, Domain, ContinuousVariable, DiscreteVariable
 
+'''
 
+Funcoes de Conversao de pandas.dataframe para Orange.data.Table, nao foi necessario o seu uso
+
+'''
 def pandas_to_orange(df):
     domain, attributes, metas = construct_domain(df)
     orange_table = Orange.data.Table.from_numpy(domain = domain, X = df[attributes].values, Y = None, metas = df[metas].values, W = None)
@@ -30,3 +34,12 @@ def construct_domain(df):
     domain = Orange.data.Domain(attributes = attributes.values(), metas = metas.values())
 
     return domain, list(attributes.keys()), list(metas.keys())
+
+'''
+
+Funcoes que manipulam o conteudo do dataset recebido inicialmente no ficheiro tab,
+o seu conteudo encontra-se mal representado por exemplo:
+- os targets nao tem conteudo: necessario definir o array de targets
+- os dados "array X", conteudo as classes (targets) e metadata: é necessario eliminar estes dados (cada coluna do array X)
+'''
+

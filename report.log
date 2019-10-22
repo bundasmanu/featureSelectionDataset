@@ -142,3 +142,5 @@
 2019-10-22 15:50:31,928 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
 2019-10-22 15:50:45,971 - GEOparse - INFO - File already exist: using local version.
 2019-10-22 15:50:45,971 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-22 15:56:56,705 - GEOparse - INFO - File already exist: using local version.
+2019-10-22 15:56:56,705 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
