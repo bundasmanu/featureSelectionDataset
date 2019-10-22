@@ -18,13 +18,20 @@ def main():
 
     data = Orange.data.Table("./datasetExplore")
     dataset = udt.UtilsDataset(data)
-    print(dataset.dataset.X.shape)
+    #print(dataset.dataset.X.shape)
+    #print(dataset.getDataset().X)
+    #print(data.domain)
     #print(data.X[0][9470:])
 
     '''
     Objeto Factory
     cs = UtilsFactory.UtilsFactory().getUtil(ut.PSO)
     '''
+
+    #REFORMULACAO DO CONTEUDO DA TABLE ORANGE, PRESENTE NO OBJETO UTILS DATASET
+    dataset= ut.transformMatrixDatasetInCorrectFormat(dataset)
+    print(dataset.getDataset().X.shape)
+    print(dataset.getDataset().Y)
 
 if __name__== "__main__":
     main()

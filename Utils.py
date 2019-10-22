@@ -5,6 +5,7 @@ import csv
 from io import StringIO
 from collections import OrderedDict
 from Orange.data import Table, Domain, ContinuousVariable, DiscreteVariable
+import UtilsDataset
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
@@ -47,3 +48,41 @@ o seu conteudo encontra-se mal representado por exemplo:
 - os dados "array X", conteudo as classes (targets) e metadata: é necessario eliminar estes dados (cada coluna do array X)
 '''
 
+def transformMatrixDatasetInCorrectFormat(dataset : UtilsDataset.UtilsDataset):
+
+    #TRANSFORMACAO INICIAL DAS COLUNAS#
+    defineColumnsTable(dataset.getDataset())
+
+    #TIRAR COLUNAS A MAIS DOS DADOS--> ARRAY X, OU SEJA, LEN(X)-FEATURES = ULTIMOS DADOS A MAIS
+    deleteColumnsMoreOverData_X(dataset.getDataset())
+
+    return dataset
+
+def defineColumnsTable(table : Orange.data.Table):
+
+    #CHAMADA FUNCAO getIndexOutput --> POSICAO DO ATRIBUTO CLASSE --> TARGETS DO DATASET
+    indexOfClass = getIndexOutput(table)
+
+    #AGORA BASTA POPULAR O ARRAY Y --> COM OS TARGETS REFERENTES A CADA UMA DAS LINHAS DE DADOS (X)--> NA COLUNA REFERENTE À CLASSE (INDICE RETORNADO)
+    allOutputs = np.array([output for output in table.X[:,indexOfClass]]) #--> 24 valores, visto que sao 24 linhas neste exemplo
+
+    table.Y = allOutputs #--> COMO O TABLE.Y É UM NUMPY ARRAY, TIVE DE CONVERTER O ALLOUTPUTS PARA NUMPY ARRAY
+
+    return table
+
+def getIndexOutput(table : Orange.data.Table):
+    return table.domain.index("class")
+
+def deleteColumnsMoreOverData_X(table : Orange.data.Table):
+
+    #GET INDEX OF ATTRIBUTE CLASS ON DATA
+    classIndex = getIndexOutput(table)
+
+    #GET TOTAL COLUMNS DATA
+    columns = table.X.shape[1]
+
+    #APAGAR COLUNAS QUE VAO DESDE A CLASS INDEX ATE AO INDEX COLUMNS --> REFORMULAR MATRIZ X
+    for j in range(table.X.shape[1]-1, classIndex-1, -1): #TEM DE ESTAR AO CONTRARTO (DO ULTIMO PARA O INDEX DA CLASSE) PORQUE COMO APAGO, FICAM MENOS COLUNAS, E SE COMECASSE PELA ORDEM HABITUAL, GERAVA INDEX OUT OF BOUNDS, PORQUE ACEDI A COLUNAS QUE JA FORAM APAGADAS, COMECANDO AO CONTRARIO NAO HÁ PROBLEMA
+        table.X = np.delete(table.X, j, axis=1) #AXIS = 1 --> REPRESENTA O EIXO DAS COLUNAS
+
+    return table
