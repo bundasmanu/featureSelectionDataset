@@ -6,6 +6,10 @@ from io import StringIO
 from collections import OrderedDict
 from Orange.data import Table, Domain, ContinuousVariable, DiscreteVariable
 
+CLASSIFIER = 'classifier'
+DATASET = 'dataset'
+PSO = 'pso'
+
 '''
 
 Funcoes de Conversao de pandas.dataframe para Orange.data.Table, nao foi necessario o seu uso

@@ -1,6 +1,6 @@
 from sklearn import svm, neighbors
 
-class UtilsClassifier:
+class UtilsClassifier():
 
     def __init__(self,gamma,vizinhos):
         self.svmClassifier = svm.SVC(gamma=gamma)

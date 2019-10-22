@@ -1,6 +1,6 @@
 import UtilsDataset as uDT
 
-class UtilsPSO:
+class UtilsPSO():
 
     '''
     Esta classe contem atributos que sao utilizados ao longo do projeto
@@ -86,6 +86,7 @@ class UtilsPSO:
         self.neighborsClassifier = newNNClassifier
 
     def objectiveFunction(self, posicoesBinariasParticula):
+        return None
 
 
 

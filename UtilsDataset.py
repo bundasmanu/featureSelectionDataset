@@ -1,6 +1,6 @@
 import Orange
 
-class UtilsDataset:
+class UtilsDataset():
 
     def __init__(self, myDataset : Orange.data.Table):
         self.dataset = myDataset

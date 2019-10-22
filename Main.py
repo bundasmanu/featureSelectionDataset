@@ -4,6 +4,8 @@ import GEOparse
 import Utils as ut
 from Orange.data.pandas_compat import table_from_frame
 from Bio import Geo
+import UtilsDataset as udt
+import UtilsFactory
 
 def main():
 
@@ -15,8 +17,14 @@ def main():
     '''
 
     data = Orange.data.Table("./datasetExplore")
-    print(data.X.shape)
+    dataset = udt.UtilsDataset(data)
+    print(dataset.dataset.X.shape)
     #print(data.X[0][9470:])
+
+    '''
+    Objeto Factory
+    cs = UtilsFactory.UtilsFactory().getUtil(ut.PSO)
+    '''
 
 if __name__== "__main__":
     main()
