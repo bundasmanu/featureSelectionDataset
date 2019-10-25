@@ -6,6 +6,7 @@ from io import StringIO
 from collections import OrderedDict
 from Orange.data import Table, Domain, ContinuousVariable, DiscreteVariable
 import UtilsDataset
+import random
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
@@ -86,3 +87,10 @@ def deleteColumnsMoreOverData_X(table : Orange.data.Table):
         table.X = np.delete(table.X, j, axis=1) #AXIS = 1 --> REPRESENTA O EIXO DAS COLUNAS
 
     return table
+
+'''
+    GENERATE RANDOM VALUE BETWEEN TWO VALUES --> 2 DECIMAL CASES
+'''
+
+def generateRandomValue(self,minLimit,maxLimit):
+    return round(random.uniform(minLimit,maxLimit),2)
