@@ -92,5 +92,5 @@ def deleteColumnsMoreOverData_X(table : Orange.data.Table):
     GENERATE RANDOM VALUE BETWEEN TWO VALUES --> 2 DECIMAL CASES
 '''
 
-def generateRandomValue(self,minLimit,maxLimit):
+def generateRandomValue(minLimit,maxLimit):
     return round(random.uniform(minLimit,maxLimit),2)

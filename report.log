@@ -144,3 +144,10 @@
 2019-10-22 15:50:45,971 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
 2019-10-22 15:56:56,705 - GEOparse - INFO - File already exist: using local version.
 2019-10-22 15:56:56,705 - GEOparse - INFO - Parsing ./GDS360.soft.gz: 
+2019-10-25 17:02:46,847 - pyswarms.discrete.binary - INFO - Optimize for 100 iters with {'c1': 0.75, 'c2': 0.78, 'w': 0.9, 'k': 50, 'p': 2}
+2019-10-25 17:07:43,460 - pyswarms.discrete.binary - INFO - Optimize for 1 iters with {'c1': 0.79, 'c2': 0.53, 'w': 0.9, 'k': 50, 'p': 2}
+2019-10-25 17:11:03,020 - pyswarms.discrete.binary - INFO - Optimize for 100 iters with {'c1': 0.36, 'c2': 0.2, 'w': 0.9, 'k': 50, 'p': 2}
+2019-10-25 17:12:36,929 - pyswarms.discrete.binary - INFO - Optimize for 100 iters with {'c1': 0.61, 'c2': 0.46, 'w': 0.9, 'k': 50, 'p': 2}
+2019-10-25 17:14:14,752 - pyswarms.discrete.binary - INFO - Optimize for 100 iters with {'c1': 0.86, 'c2': 0.62, 'w': 0.9, 'k': 50, 'p': 2}
+2019-10-25 17:20:43,623 - pyswarms.discrete.binary - INFO - Optimize for 100 iters with {'c1': 0.51, 'c2': 0.93, 'w': 0.9, 'k': 50, 'p': 2}
+2019-10-25 17:25:00,547 - pyswarms.discrete.binary - INFO - Optimize for 100 iters with {'c1': 0.52, 'c2': 0.67, 'w': 0.9, 'k': 50, 'p': 2}

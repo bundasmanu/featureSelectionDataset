@@ -88,7 +88,7 @@ class UtilsPSO():
         accuracy = (classifier.getSVMClassifier().predict(X_subset) == dataset.getDataset().Y).mean() #TESTE DO PROBLEMA, TENDO EM CONTA O TREINO EFETUADO ATRAS, E CALCULADA A ACCURACY, TENDO EM CONTA OS ACERTOS QUE EXISTIRAM
 
         #CALCULO DA FUNCAO DE CUSTO, EXPLICADA ANTERIORMENTE
-        j = (alpha * (1 - accuracy) + (1 - alpha) * (1- (X_subset[1] /dataset.getDataset().X.shape[1])))
+        j = (alpha * (1.0 - accuracy) + (1.0 - alpha) * (1 - (X_subset.shape[1] /dataset.getDataset().X.shape[1])))
 
         return j
 
@@ -107,4 +107,4 @@ class UtilsPSO():
 
         j = [self.objectiveFunction(arrayParticleSDimensions[i], dataset, classifier, alpha) for i in range(nParticles)] #ARRAY QUE AGREGA O RETORNO DA EXECUCAO DA FUNCAO OBJETIVO PARA CADA UMA DAS PARTICULAS
 
-        return j
+        return np.array(j)
