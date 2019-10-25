@@ -39,7 +39,7 @@ def main():
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
     #DEFINICAO DO ALGORITMO PSO
-    n_particles = 50
+    n_particles = 20
     psoArgs = {UtilsPSO.UtilsPSO.INERCIA: 0.9, UtilsPSO.UtilsPSO.C1 : 1.4, UtilsPSO.UtilsPSO.C2 : 1.4, UtilsPSO.UtilsPSO.ALPHA : 0.88, UtilsPSO.UtilsPSO.NEIGHBORS : n_particles, 'p': 2} #p não é relevante, visto que todas as particulas se veem umas as outras, o p representa a distancia entre cada uma das particulas
 
     psoAlgorithm = factory.getUtil(ut.PSO).getPso(**psoArgs)
@@ -48,13 +48,16 @@ def main():
     dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
     optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms)
 
-    optimizer.reset()
-    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 200, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
+    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 2, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
 
     #CONTAGEM DE QUANTAS FEATURES SAO RELEVANTES
     bestPos = ut.listToNumpy(bestPos)
     newFeatures = numpy.count_nonzero(bestPos)
+    print(newFeatures)
 
+    #CRIACAO DA COPIA
+    deepCopy = ut.createCloneOfReducedDataset(dataset,bestPos)
+    print(deepCopy.getDataset().X.shape)
 
 if __name__== "__main__":
     main()

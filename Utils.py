@@ -7,6 +7,7 @@ from collections import OrderedDict
 from Orange.data import Table, Domain, ContinuousVariable, DiscreteVariable
 import UtilsDataset
 import random
+import UtilsFactory
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
@@ -104,3 +105,21 @@ def listToNumpy(list):
 '''
     CRIACAO DE UM DATASET QUE É UMA COPIA DO DATASET INICIAL, MAS COM UM NUMERO DE FEATURES MAIS COMPACTA, DEPOIS DE APLICADO O ALGORITMO, OS TARGETS MANTEM-SE
 '''
+def createCloneOfReducedDataset(dataset : UtilsDataset.UtilsDataset, bestPos):
+
+    try:
+
+        if not isinstance(dataset, UtilsDataset.UtilsDataset):
+            raise TypeError
+
+        #CRIACAO DE UM NOVO OBJETO UTILS DATASET E DEPOIS EDITAR O DATASET
+        copyOfDataset = dataset.deepCopy()
+
+        #RECRIACAO DO ARRAY X TENDO EM CONTA A REFORMULACAO DE DADOS --> NECESSITO DO BESTPOS (ARRAY) RETORNADO PELO PSO--> MELHOR POSICAO ENCONTRADA
+        copyOfDataset.getDataset().X = np.delete(copyOfDataset.getDataset().X, np.argwhere(bestPos==0), axis=1)
+
+        return copyOfDataset
+
+    except:
+        print('Catched error')
+        return None
