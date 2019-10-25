@@ -94,3 +94,13 @@ def deleteColumnsMoreOverData_X(table : Orange.data.Table):
 
 def generateRandomValue(minLimit,maxLimit):
     return round(random.uniform(minLimit,maxLimit),2)
+
+'''
+    TRANSFORM LIST INTO NUMPY ARRAY
+'''
+def listToNumpy(list):
+    return np.array(list)
+
+'''
+    CRIACAO DE UM DATASET QUE É UMA COPIA DO DATASET INICIAL, MAS COM UM NUMERO DE FEATURES MAIS COMPACTA, DEPOIS DE APLICADO O ALGORITMO, OS TARGETS MANTEM-SE
+'''
