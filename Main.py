@@ -19,7 +19,7 @@ def main():
     '''
 
     data = Orange.data.Table("./datasetExplore")
-    dataset = udt.UtilsDataset(data)
+    dataset = UtilsFactory.UtilsFactory.getUtil(ut.DATASET).getDataset(data)
     #print(dataset.dataset.X.shape)
     #print(dataset.getDataset().X)
     #print(data.domain)
@@ -34,9 +34,20 @@ def main():
     dataset= ut.transformMatrixDatasetInCorrectFormat(dataset)
     print(dataset.getDataset().X.shape)
     print(dataset.getDataset().Y)
-    classificador = UtilsClassifier.UtilsClassifier(gamma=0.1, vizinhos=5) #CRIACAO DO CLASSIFICADOR
+    classificador = UtilsFactory.UtilsFactory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.1, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
-    psoArgs = {UtilsPSO.UtilsPSO.alpha: 0.9, UtilsPSO.UtilsPSO.C1 : ut.generateRandomValue(0,1), UtilsPSO.UtilsPSO.C2 : ut.generateRandomValue(0,1)}
+    #DEFINICAO DO ALGORITMO PSO
+    n_particles = 50
+    psoArgs = {UtilsPSO.UtilsPSO.alpha: 0.9, UtilsPSO.UtilsPSO.C1 : ut.generateRandomValue(0,1), UtilsPSO.UtilsPSO.C2 : ut.generateRandomValue(0,1), UtilsPSO.UtilsPSO.ALPHA : ut.generateRandomValue(0,1), UtilsPSO.UtilsPSO.NEIGHBORS : n_particles, 'p': 2} #p não é relevante, visto que todas as particulas se veem umas as outras, o p representa a distancia entre cada uma das particulas
+
+    psoAlgorithm = UtilsFactory.UtilsFactory.getUtil(ut.PSO).getPso(**psoArgs)
+    optionsPySwarms = {'c1' : psoAlgorithm.getC1(), 'c2' : psoAlgorithm.getC2(), 'w' : psoAlgorithm.getInercia(), 'k' : psoArgs.get(UtilsPSO.UtilsPSO.NEIGHBORS), 'p' : psoArgs.get('p')}
+
+    dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
+    optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms)
+
+    cost, pos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha(), iters=100)
+
 
 if __name__== "__main__":
     main()

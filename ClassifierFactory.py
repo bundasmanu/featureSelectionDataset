@@ -2,5 +2,5 @@ import UtilsClassifier
 
 class ClassifierFactory:
 
-    def getDataset(self,gamma,vizinhos):
+    def getClassifier(self,gamma,vizinhos):
         return UtilsClassifier.UtilsClassifier(gamma,vizinhos)
