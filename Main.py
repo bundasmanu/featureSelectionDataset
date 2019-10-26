@@ -9,6 +9,8 @@ import UtilsFactory
 import UtilsClassifier
 import UtilsPSO
 import numpy
+import AbstractLearner, SVMLearner, KNNLearner
+import Orange.evaluation.scoring
 
 def main():
 
@@ -37,6 +39,13 @@ def main():
     print(dataset.getDataset().X.shape)
     print(dataset.getDataset().Y)
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
+
+    #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
+    svmLeaner =SVMLearner.SVMLearner(gamma=0.5)
+    learner = svmLeaner.getLearner()
+    predictions = learner.fit(dataset.getDataset().X[12:18],dataset.getDataset().Y[12:18]).predict(dataset.getDataset().X)
+    print(Orange.evaluation.scoring.confusion_matrix(dataset.getDataset().Y, predictions))
+    print(ut.print_results(dataset.getDataset().Y,predictions))
 
     #DEFINICAO DO ALGORITMO PSO
     n_particles = 20

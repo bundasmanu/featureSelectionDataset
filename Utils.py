@@ -8,6 +8,8 @@ from Orange.data import Table, Domain, ContinuousVariable, DiscreteVariable
 import UtilsDataset
 import random
 import UtilsFactory
+import Orange.evaluation.scoring
+import sklearn.metrics
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
@@ -123,3 +125,17 @@ def createCloneOfReducedDataset(dataset : UtilsDataset.UtilsDataset, bestPos):
     except:
         print('Catched error')
         return None
+
+'''
+    FUNCAO QUE IMPRIME OS RESULTADOS DA PREVISAO
+'''
+def print_results(real, predictions):
+
+    loss = sklearn.metrics.hamming_loss(real,predictions)
+    accuracy = sklearn.metrics.accuracy_score(real,predictions)
+    precision = sklearn.metrics.precision_score(real,predictions)
+    recall = sklearn.metrics.recall_score(real,predictions)
+    print('loss=', loss)
+    print('accuracy=', accuracy)
+    print ('precision=', precision)
+    print ('recall=', recall)
