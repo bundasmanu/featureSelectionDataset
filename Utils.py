@@ -139,3 +139,65 @@ def print_results(real, predictions):
     print('accuracy=', accuracy)
     print ('precision=', precision)
     print ('recall=', recall)
+
+'''
+    FUNCOES QUE APLICAM A IDEIA DO ALGORITMO DE SELECCAO DE FEATURES, RECORRENDO AO PSO
+'''
+
+def createEmptyNumpyArray(nParticles, nDimensions):
+
+    '''
+
+    :param nParticles: nº de particulas
+    :param nDimensions: nº de dimensoes do problema
+    :return: numpy Array com shape de (nParticles, nDimensions), com todos os valores a 0
+    '''
+
+    emptyArray = np.zeros(shape=(nParticles,nDimensions))
+
+    return emptyArray
+
+def generateListRandomValues(min, max, numberOfValues):
+
+    '''
+    THIS METHOD AVOIDS REPEATED NUMBERS
+
+    :param min: min value on list
+    :param max: max value on list
+    :param numberOfValues: numberValues to sort
+    :return: array with numberOfValues values sorted
+    '''
+
+    listAllValues = list(range(min,max))
+    random.shuffle(listAllValues)
+
+    myList = None * numberOfValues #CRIACAO DE UMA LISTA VAZIA
+
+    for i in range(numberOfValues):
+        myList= listAllValues.pop() #VAI BUSCAR UM VALOR AO ARRAY SORTEADO
+
+    return myList
+
+def selectRelevantFeaturesByParticle(indexParticle, listFeatures):
+
+    '''
+
+    :param indexParticle:
+    :param listFeatures:
+    :return:
+    '''
+
+def createArrayInitialPos(nParticles, nDimensions, nRelevantFeatures):
+
+    '''
+
+    :param n_particles: numero de particulas a utilizar no algoritmo
+    :param nDimensions: dimensoes do problema (nº de features)
+    :param nRelevantFeatures: numero de features que devem estar a 1 (sao relevantes)
+    :return: numpy array, com shape de (nParticles, nDimensions), preenchido com valores a 1 = nRelevantFeatures --> aleatoriamente
+    '''
+
+    emptyArray = createEmptyNumpyArray(nParticles, nDimensions)
+
+    for i in range(nParticles):
+        listRandomValues = generateRandomValue(0,nDimensions,nRelevantFeatures)

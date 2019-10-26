@@ -57,7 +57,7 @@ def main():
     dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
     optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms)
 
-    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 2, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
+    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 2, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha() )
 
     #CONTAGEM DE QUANTAS FEATURES SAO RELEVANTES
     bestPos = ut.listToNumpy(bestPos)
