@@ -55,9 +55,10 @@ def main():
     optionsPySwarms = {'c1' : psoAlgorithm.getC1(), 'c2' : psoAlgorithm.getC2(), 'w' : psoAlgorithm.getInercia(), 'k' : psoArgs.get(UtilsPSO.UtilsPSO.NEIGHBORS), 'p' : psoArgs.get('p')}
 
     dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
-    optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms)
+    initPos = ut.createArrayInitialPos(n_particles,dimensionsOfProblem,100)
+    optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms, init_pos=initPos)
 
-    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 2, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha() )
+    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 1, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha() )
 
     #CONTAGEM DE QUANTAS FEATURES SAO RELEVANTES
     bestPos = ut.listToNumpy(bestPos)

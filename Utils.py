@@ -162,19 +162,19 @@ def generateListRandomValues(min, max, numberOfValues):
     '''
     THIS METHOD AVOIDS REPEATED NUMBERS
 
-    :param min: min value on list
-    :param max: max value on list
-    :param numberOfValues: numberValues to sort
+    :param min: min value on list --> em principio 0
+    :param max: max value on list --> number of Particles
+    :param numberOfValues: numberValues to sort --> por exemplo quero apenas 100 features
     :return: array with numberOfValues values sorted
     '''
 
     listAllValues = list(range(min,max))
     random.shuffle(listAllValues)
 
-    myList = None * numberOfValues #CRIACAO DE UMA LISTA VAZIA
+    myList = list() #CRIACAO DE UMA LISTA VAZIA
 
     for i in range(numberOfValues):
-        myList= listAllValues.pop() #VAI BUSCAR UM VALOR AO ARRAY SORTEADO
+        myList.append(listAllValues.pop()) #VAI BUSCAR UM VALOR AO ARRAY SORTEADO
 
     return myList
 
@@ -188,9 +188,8 @@ def selectRelevantFeaturesByParticle(indexParticle, listFeatures, listParticlesD
     :return: lista atualizada--> valores das features de apenas uma particula
     '''
 
-    for i in indexParticle:
-        for j in range(len(listFeatures)):
-            listParticlesDimensions[i][j] = 1
+    for j in listFeatures:
+        listParticlesDimensions[indexParticle][j] = 1
 
     return listParticlesDimensions
 
@@ -207,7 +206,7 @@ def createArrayInitialPos(nParticles, nDimensions, nRelevantFeatures):
     emptyArray = createEmptyNumpyArray(nParticles, nDimensions)
 
     for i in range(nParticles):
-        listRandomValues = generateRandomValue(0,nDimensions,nRelevantFeatures)
+        listRandomValues = generateListRandomValues(0, nDimensions, nRelevantFeatures)
         emptyArray = selectRelevantFeaturesByParticle(i,listRandomValues,emptyArray)
 
     return emptyArray
