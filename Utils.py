@@ -178,14 +178,21 @@ def generateListRandomValues(min, max, numberOfValues):
 
     return myList
 
-def selectRelevantFeaturesByParticle(indexParticle, listFeatures):
+def selectRelevantFeaturesByParticle(indexParticle, listFeatures, listParticlesDimensions):
 
     '''
 
-    :param indexParticle:
-    :param listFeatures:
-    :return:
+    :param indexParticle: indice da particula
+    :param listFeatures: features relevantes sorteadas (para colcar na particula com valor 1)
+    :param listParticlesDimensions: lista com as posicoes das particulas
+    :return: lista atualizada--> valores das features de apenas uma particula
     '''
+
+    for i in indexParticle:
+        for j in range(len(listFeatures)):
+            listParticlesDimensions[i][j] = 1
+
+    return listParticlesDimensions
 
 def createArrayInitialPos(nParticles, nDimensions, nRelevantFeatures):
 
@@ -201,3 +208,6 @@ def createArrayInitialPos(nParticles, nDimensions, nRelevantFeatures):
 
     for i in range(nParticles):
         listRandomValues = generateRandomValue(0,nDimensions,nRelevantFeatures)
+        emptyArray = selectRelevantFeaturesByParticle(i,listRandomValues,emptyArray)
+
+    return emptyArray
