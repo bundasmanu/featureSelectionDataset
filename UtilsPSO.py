@@ -104,7 +104,6 @@ class UtilsPSO():
         '''
 
         nParticles = arrayParticleSDimensions.shape[0]
-
         j = [self.objectiveFunction(arrayParticleSDimensions[i], dataset, classifier, alpha) for i in range(nParticles)] #ARRAY QUE AGREGA O RETORNO DA EXECUCAO DA FUNCAO OBJETIVO PARA CADA UMA DAS PARTICULAS
 
         return np.array(j)

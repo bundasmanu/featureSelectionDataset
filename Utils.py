@@ -14,6 +14,7 @@ import sklearn.metrics
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
 PSO = 'pso'
+MAINWINDOWTITLE = "PSO FEATURE SELECTION"
 
 '''
 

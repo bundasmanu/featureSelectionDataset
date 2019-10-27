@@ -11,6 +11,9 @@ import UtilsPSO
 import numpy
 import AbstractLearner, SVMLearner, KNNLearner
 import Orange.evaluation.scoring
+import sys
+from PyQt5.QtWidgets import *
+import MainWindow
 
 def main():
 
@@ -20,6 +23,11 @@ def main():
         ds = ut.pandas_to_orange(dataset.table)
         print(ds.X.shape)
     '''
+
+    app = QApplication(sys.argv)
+    window = MainWindow.MainWindow()
+    #window.show()
+    sys.exit(app.exec())
 
     data = Orange.data.Table("./datasetExplore")
     factory = UtilsFactory.UtilsFactory()
@@ -57,8 +65,7 @@ def main():
     dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
     initPos = ut.createArrayInitialPos(n_particles,dimensionsOfProblem,100)
     optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms, init_pos=initPos)
-
-    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 1, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha() )
+    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 2, dataset= dataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
 
     #CONTAGEM DE QUANTAS FEATURES SAO RELEVANTES
     bestPos = ut.listToNumpy(bestPos)
