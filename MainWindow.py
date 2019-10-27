@@ -2,26 +2,32 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import Utils
+import UtilsPSO
+import UtilsFactory
+import numpy
+import pyswarms as ps
+import Orange
 
 class MainWindow(QMainWindow):
 
-    def __init__(self, *args, **kwargs):
-        super(MainWindow,self).__init__(*args, **kwargs)
+    def __init__(self, dataset : Orange.data.Table):
+        super(MainWindow,self).__init__()
+        self.dataset = dataset
         self.title = str(Utils.MAINWINDOWTITLE)
         self.layout = QFormLayout()
         self.window = QWidget()
         self.window.setWindowTitle(self.title)
-        self.dataTOWindow()
         self.window.show()
-        self.txtParticulas = None
-        self.slider2 = None
-        self.txtInercia = None
-        self.txtC1 = None
-        self.txtC2 = None
-        self.txtAlpha = None
-        self.txtVizinhanca = None
-        self.txtIteracoes = None
-        self.btnRunAlgoritm = None
+        self.txtParticulas = QLineEdit
+        self.slider2 = QSlider
+        self.txtInercia = QLineEdit
+        self.txtC1 = QLineEdit
+        self.txtC2 = QLineEdit
+        self.txtAlpha = QLineEdit
+        self.txtVizinhanca = QLineEdit
+        self.txtIteracoes = QLineEdit
+        self.btnRunAlgoritm = QPushButton
+        self.dataTOWindow()
 
     def dataTOWindow(self):
 
@@ -51,9 +57,9 @@ class MainWindow(QMainWindow):
 
         #SLIDER RELEVANT FEATURES
         self.layout.addWidget(QLabel('Numero de Features relevantes - init_pos'))
-        slider2 = self.createNumericSlider(0, 100) #Relevant Features
-        self.layout.addWidget(slider2)
-        labelsSlider = self.labelsFromSlider(slider2)
+        self.slider2 = self.createNumericSlider(0, 100) #Relevant Features
+        self.layout.addWidget(self.slider2)
+        labelsSlider = self.labelsFromSlider(self.slider2)
         for i in labelsSlider:
             self.layout.addWidget(i)
 
@@ -64,14 +70,46 @@ class MainWindow(QMainWindow):
         #BOTAO CORRER
         self.btnRunAlgoritm = QPushButton('Center')
         self.btnRunAlgoritm.setText("Run")
+        self.btnRunAlgoritm.clicked.connect(self.btnClick) #CLICK DO BOTAO
         self.layout.addWidget(self.btnRunAlgoritm)
 
         self.window.setLayout(self.layout)
 
+    def getValueParticle(self, part):
+        return int(part.text())
+
+    def btnClick(self):
+        # DEFINICAO DO ALGORITMO PSO
+        n_particles = self.getValueParticle(self.txtParticulas)
+        psoArgs = {UtilsPSO.UtilsPSO.INERCIA: int(self.txtInercia.text()), UtilsPSO.UtilsPSO.C1: int(self.txtC1.text()), UtilsPSO.UtilsPSO.C2: int(self.txtC2.text()),
+                   UtilsPSO.UtilsPSO.ALPHA: int(self.txtAlpha.text()), UtilsPSO.UtilsPSO.NEIGHBORS: int(self.txtVizinhanca.text()),
+                   'p': 2}  # p não é relevante, visto que todas as particulas se veem umas as outras, o p representa a distancia entre cada uma das particulas
+
+        factory = UtilsFactory.UtilsFactory()
+        classificador = factory.getUtil(Utils.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5)  # CRIACAO DO CLASSIFICADOR
+        psoAlgorithm = factory.getUtil(Utils.PSO).getPso(**psoArgs)
+        optionsPySwarms = {'c1': psoAlgorithm.getC1(), 'c2': psoAlgorithm.getC2(), 'w': psoAlgorithm.getInercia(),
+                           'k': psoArgs.get(UtilsPSO.UtilsPSO.NEIGHBORS), 'p': psoArgs.get('p')}
+
+        dimensionsOfProblem = self.dataset.getDataset().X.shape[1]  # FEATURES DO DATASET
+        initPos = Utils.createArrayInitialPos(n_particles, dimensionsOfProblem, self.slider2.value() )
+        optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem,
+                                          options=optionsPySwarms, init_pos=initPos)
+        bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 2, dataset=self.dataset,
+                                               classifier=classificador, alpha=psoAlgorithm.getAlpha())
+
+        # CONTAGEM DE QUANTAS FEATURES SAO RELEVANTES
+        bestPos = Utils.listToNumpy(bestPos)
+        newFeatures = numpy.count_nonzero(bestPos)
+        #print(newFeatures)
+
+        # CRIACAO DA COPIA
+        deepCopy = Utils.createCloneOfReducedDataset(self.dataset, bestPos)
+        print(deepCopy.getDataset().X.shape)
+
     def createNumericTextIndex(self, maxLength, alignment, fontSize):
 
         e1 = QLineEdit()
-        e1.setValidator(QIntValidator())
         e1.setMaxLength(maxLength)
         e1.setAlignment(alignment)
         e1.setFont(QFont("Arial", fontSize))

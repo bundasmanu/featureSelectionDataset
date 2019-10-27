@@ -24,11 +24,6 @@ def main():
         print(ds.X.shape)
     '''
 
-    app = QApplication(sys.argv)
-    window = MainWindow.MainWindow()
-    #window.show()
-    sys.exit(app.exec())
-
     data = Orange.data.Table("./datasetExplore")
     factory = UtilsFactory.UtilsFactory()
     dataset = factory.getUtil(name=ut.DATASET).getDataset(data)
@@ -55,6 +50,12 @@ def main():
     print(Orange.evaluation.scoring.confusion_matrix(dataset.getDataset().Y, predictions))
     print(ut.print_results(dataset.getDataset().Y,predictions))
 
+    '''
+        ABERTURA DA APLICACAO
+        app = QApplication(sys.argv)
+        window = MainWindow.MainWindow()
+    '''
+
     #DEFINICAO DO ALGORITMO PSO
     n_particles = 20
     psoArgs = {UtilsPSO.UtilsPSO.INERCIA: 0.9, UtilsPSO.UtilsPSO.C1 : 1.4, UtilsPSO.UtilsPSO.C2 : 1.4, UtilsPSO.UtilsPSO.ALPHA : 0.88, UtilsPSO.UtilsPSO.NEIGHBORS : n_particles, 'p': 2} #p não é relevante, visto que todas as particulas se veem umas as outras, o p representa a distancia entre cada uma das particulas
@@ -75,6 +76,11 @@ def main():
     #CRIACAO DA COPIA
     deepCopy = ut.createCloneOfReducedDataset(dataset,bestPos)
     print(deepCopy.getDataset().X.shape)
+
+    '''
+        FECHO DA APLICACAO
+        sys.exit(app.exec())
+    '''
 
 if __name__== "__main__":
     main()
