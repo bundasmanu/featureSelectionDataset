@@ -83,10 +83,10 @@ class UtilsPSO():
         else:
             X_subset = dataset.getDataset().X[:, arrayParticleDimensions==1] #DATASET APENAS COM AS COLUNAS REFERENTES ÀS FEATURES QUE A PARTICULA ACHA RELEVANTES, PARA CADA UMA DAS 24 LINHAS
 
-        classifier.getSVMClassifier().fit(X_subset,dataset.getDataset().Y) #TREINO TENDO EM CONSIDERACAO APENAS AS FEATURES RELEVANTES, QUE A PARTICULA INDICOU
+        classifier.getSVMClassifier().fit(X_subset[range(9,20,10)],dataset.getDataset().Y[range(9,20,10)]) #TREINO TENDO EM CONSIDERACAO APENAS AS FEATURES RELEVANTES, QUE A PARTICULA INDICOU
 
         accuracy = (classifier.getSVMClassifier().predict(X_subset) == dataset.getDataset().Y).mean() #TESTE DO PROBLEMA, TENDO EM CONTA O TREINO EFETUADO ATRAS, E CALCULADA A ACCURACY, TENDO EM CONTA OS ACERTOS QUE EXISTIRAM
-
+        print(accuracy)
         #CALCULO DA FUNCAO DE CUSTO, EXPLICADA ANTERIORMENTE
         j = (alpha * (1.0 - accuracy) + (1.0 - alpha) * (1 - (X_subset.shape[1] /dataset.getDataset().X.shape[1])))
 
