@@ -10,11 +10,15 @@ import random
 import UtilsFactory
 import Orange.evaluation.scoring
 import sklearn.metrics
+import AbstractLearner, KMeansLearner
+from sklearn.metrics import silhouette_score
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
 PSO = 'pso'
 MAINWINDOWTITLE = "PSO FEATURE SELECTION"
+
+rangeClusterValues = [7, 14, 21]
 
 '''
 
@@ -211,3 +215,42 @@ def createArrayInitialPos(nParticles, nDimensions, nRelevantFeatures):
         emptyArray = selectRelevantFeaturesByParticle(i,listRandomValues,emptyArray)
 
     return emptyArray
+
+'''
+    CLUSTERS
+'''
+
+def getBestValueOfK(dataset : UtilsDataset.UtilsDataset):
+
+    '''
+    Fontes : https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html#sphx-glr-auto-examples-cluster-plot-kmeans-silhouette-analysis-py
+            https://stats.stackexchange.com/questions/10540/how-to-interpret-mean-of-silhouette-plot
+    :param listRangeValuesK: lista com possiveis valores de K
+    :return: valor de k, que apresenta melhor score, recorrendo ao silhouette
+    '''
+    bestKValue = rangeClusterValues[0]
+    silhouetteAvg = 0.0
+    for cluster in rangeClusterValues:
+        clusterInEvaluation = KMeansLearner.KMeansLearner(cluster)
+
+        clusterPredictions = clusterInEvaluation.getLearner().fit_predict(dataset.getDataset().X)
+
+        silAvg = silhouette_score(dataset.getDataset().X,clusterPredictions)
+
+        if silAvg > silhouetteAvg : #MAIOR INTERDEPENDENCIA ENTRE CLUSTERS
+            silhouetteAvg = silAvg
+            bestKValue = cluster
+
+    return bestKValue
+
+def applyClustering(clusterNumber, dataset : UtilsDataset.UtilsDataset):
+    '''
+
+    :param dataset: dataset a treinar
+    :return: retorno do objeto KMeans utilizado no treino
+    '''
+
+    kmeans = KMeansLearner.KMeansLearner(clusterNumber) #CRIACAO DO OBJETO
+    kmeans.getLearner().fit(dataset.getDataset().X) #TREINO
+
+    return kmeans

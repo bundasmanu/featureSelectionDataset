@@ -472,3 +472,9 @@
 2019-10-29 16:08:34,712 - pyswarms.discrete.binary - INFO - Optimization finished | best cost: 0.47666666666666674, best pos: [1. 1. 1. ... 1. 1. 1.]
 2019-10-29 16:08:57,028 - pyswarms.discrete.binary - INFO - Optimize for 2 iters with {'c1': 1.4, 'c2': 1.4, 'w': 0.9, 'k': 2, 'p': 2}
 2019-10-29 16:08:57,046 - pyswarms.discrete.binary - INFO - Optimization finished | best cost: 0.523307992820188, best pos: [0. 0. 0. ... 0. 0. 0.]
+2019-10-29 17:38:22,791 - pyswarms.discrete.binary - INFO - Optimize for 2 iters with {'c1': 1.4, 'c2': 1.4, 'w': 0.9, 'k': 2, 'p': 2}
+2019-10-29 17:38:22,810 - pyswarms.discrete.binary - INFO - Optimization finished | best cost: 0.5241674585577025, best pos: [1. 1. 0. ... 0. 0. 0.]
+2019-10-29 23:19:45,594 - pyswarms.discrete.binary - INFO - Optimize for 2 iters with {'c1': 1.4, 'c2': 1.4, 'w': 0.9, 'k': 2, 'p': 2}
+2019-10-29 23:19:45,614 - pyswarms.discrete.binary - INFO - Optimization finished | best cost: 0.5231411677753142, best pos: [1. 1. 0. ... 1. 0. 1.]
+2019-11-02 16:17:02,880 - pyswarms.discrete.binary - INFO - Optimize for 2 iters with {'c1': 1.4, 'c2': 1.4, 'w': 0.9, 'k': 2, 'p': 2}
+2019-11-02 16:17:28,467 - pyswarms.discrete.binary - INFO - Optimize for 2 iters with {'c1': 1.4, 'c2': 1.4, 'w': 0.9, 'k': 2, 'p': 2}
