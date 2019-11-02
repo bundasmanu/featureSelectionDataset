@@ -15,6 +15,7 @@ import sys
 from PyQt5.QtWidgets import *
 import MainWindow
 import KMeansLearner
+from sklearn.metrics import pairwise_distances_argmin_min, pairwise_distances_argmin
 
 def main():
 
@@ -45,9 +46,11 @@ def main():
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
     #IDENTIFICACAO DO MELHOR VALOR DE K (CLUSTERS), TENDO EM CONTA UMA GAMA DE CLUSTERS E O DATASET EM ANALISE
-    bestValueofK = ut.getBestValueOfK(dataset)
-    kMeansObject = ut.applyClustering(bestValueofK, dataset)
+    transposeDataset = ut.applyTranspostMatrix(dataset)
+    #bestValueofK = ut.getBestValueOfK(transposeDataset)
+    kMeansObject = ut.applyClustering(300, transposeDataset)
 
+    #OBTENCAO DAS MELHORES FEATURES DE CADA CLUSTER
 
     # #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
     # svmLeaner =SVMLearner.SVMLearner(gamma=0.5)

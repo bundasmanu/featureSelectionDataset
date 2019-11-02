@@ -18,7 +18,7 @@ DATASET = 'dataset'
 PSO = 'pso'
 MAINWINDOWTITLE = "PSO FEATURE SELECTION"
 
-rangeClusterValues = [7, 14, 21]
+rangeClusterValues = [30, 60, 90, 120, 150, 180, 210, 240, 270, 300]
 
 '''
 
@@ -220,6 +220,20 @@ def createArrayInitialPos(nParticles, nDimensions, nRelevantFeatures):
     CLUSTERS
 '''
 
+def applyTranspostMatrix(dataset : UtilsDataset.UtilsDataset):
+
+    '''
+
+    :param dataset: matriz do dataset a fazer transposicao
+    :return: deep copy da matriz transposta
+    '''
+
+    transposeMatrix = dataset.deepCopy()
+
+    transposeMatrix.getDataset().X = np.transpose(transposeMatrix.getDataset().X)
+
+    return transposeMatrix
+
 def getBestValueOfK(dataset : UtilsDataset.UtilsDataset):
 
     '''
@@ -235,7 +249,7 @@ def getBestValueOfK(dataset : UtilsDataset.UtilsDataset):
 
         clusterPredictions = clusterInEvaluation.getLearner().fit_predict(dataset.getDataset().X)
 
-        silAvg = silhouette_score(dataset.getDataset().X,clusterPredictions)
+        silAvg = silhouette_score(dataset.getDataset().X, clusterPredictions)
 
         if silAvg > silhouetteAvg : #MAIOR INTERDEPENDENCIA ENTRE CLUSTERS
             silhouetteAvg = silAvg
