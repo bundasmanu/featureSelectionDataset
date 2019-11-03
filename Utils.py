@@ -12,13 +12,14 @@ import Orange.evaluation.scoring
 import sklearn.metrics
 import AbstractLearner, KMeansLearner
 from sklearn.metrics import silhouette_score
+import scipy.spatial.distance as sdist
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
 PSO = 'pso'
 MAINWINDOWTITLE = "PSO FEATURE SELECTION"
 
-rangeClusterValues = [30, 60, 90, 120, 150, 180, 210, 240, 270, 300]
+rangeClusterValues = [6, 12, 18]
 
 '''
 
@@ -265,6 +266,44 @@ def applyClustering(clusterNumber, dataset : UtilsDataset.UtilsDataset):
     '''
 
     kmeans = KMeansLearner.KMeansLearner(clusterNumber) #CRIACAO DO OBJETO
-    kmeans.getLearner().fit(dataset.getDataset().X) #TREINO
+    kmeans.getLearner().fit_predict(dataset.getDataset().X) #TREINO
 
     return kmeans
+
+def getBestValuesForCluster(manyValues, kMeans : KMeansLearner.KMeansLearner, dataset: UtilsDataset.UtilsDataset):
+    '''
+
+    :param manyValues: quantos valores pretendo por cluster
+    :param kMeans: objeto KMeans
+    :return: lista com os atributos mais relevantes, de cada cluster, matriz[linhas, colunas]--> linhas = features de cada cluster
+    '''
+    #Fonte: https://stackoverflow.com/questions/51309526/kmeans-euclidean-distance-to-each-centroid-avoid-splitting-features-from-rest-of
+
+    for i in range(len(kMeans.getLearner().cluster_centers_)):
+        for j in range(len(kMeans.getLearner().labels_)):
+            if i == kMeans.getLearner().labels_[j]:
+                distance = np.linalg.norm(dataset.getDataset().X[j]- kMeans.getLearner().cluster_centers_[i])
+                print(distance)
+                print(i)
+                print(j) #OBJETIVO OBTER OS MENORES VALORES
+
+
+
+'''
+    TRANSFORM DATASET IN REDUCED DATASET --> USING CLONE FUNCTION
+'''
+
+def createBinaryNumpyArrayWithReducedFeatures(relevantFeatures, dataset: UtilsDataset.UtilsDataset):
+    '''
+
+    :param relevantFeatures: array with relevant features
+    :return: numpy binary array with 0 or 1 --> 1 relevant features
+    '''
+
+    #oneDArray = list(relevantFeatures.flat)
+
+    emptyArray = np.zeros(dataset.getDataset().X.shape[1]) #PASSO O DATASET OFICIAL E NAO O TRANSPOSTO
+
+    emptyArray = np.insert(emptyArray,relevantFeatures,1)
+
+    return emptyArray

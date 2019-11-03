@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 class KMeansLearner(AbstractLearner):
 
     def __init__(self, k):
-        self.kmeans = KMeans(k, random_state=10)
+        self.kmeans = KMeans(k, random_state=10, max_iter=100)
 
     def getLearner(self):
         return self.kmeans
