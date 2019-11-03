@@ -297,8 +297,8 @@ def getBestValuesForCluster(manyValues, kMeans : KMeansLearner.KMeansLearner, da
     #Fonte: https://stackoverflow.com/questions/51309526/kmeans-euclidean-distance-to-each-centroid-avoid-splitting-features-from-rest-of
 
     controlNumberValues = 0
-    arrayBestFeaturesPerCluster = [[None]*manyValues for i in range(30)]
-    arrayPositionsPerCluster = [[None]*manyValues for i in range(30)]
+    arrayBestFeaturesPerCluster = [[None]*manyValues for i in range(60)]
+    arrayPositionsPerCluster = [[None]*manyValues for i in range(60)]
 
     for i in range(len(kMeans.getLearner().cluster_centers_)):
         controlNumberValues = 0
@@ -321,7 +321,7 @@ def getBestValuesForCluster(manyValues, kMeans : KMeansLearner.KMeansLearner, da
     return arrayPositionsPerCluster
 
 '''
-    TRANSFORM DATASET IN REDUCED DATASET --> USING CLONE FUNCTION
+    TRANSFORM DATASET IN REDUCED DATASET --> USING CLONE FUNCTION--> IMPORT FOR CREATE CLONE OF NEW'S DATASET
 '''
 
 def createBinaryNumpyArrayWithReducedFeatures(relevantFeatures, dataset: UtilsDataset.UtilsDataset):
@@ -352,5 +352,7 @@ def applyMinMaxScaler(dataset : UtilsDataset.UtilsDataset):
 
     scaler.fit(dataset.getDataset().X) #COMPUTACAO DOS VALORES DE MIN E MAX A UTILIZAR NA COMPUTACAO
 
-    scaler.transform(dataset.getDataset().X) #APLICACAO DA ESCALA AS FEATURES DO DATASET, DE ACORDO COM O RANGE ESTABELECIDO NO FIT
+    dataset.getDataset().X = scaler.transform(dataset.getDataset().X) #APLICACAO DA ESCALA AS FEATURES DO DATASET, DE ACORDO COM O RANGE ESTABELECIDO NO FIT
     #O SCALER TRANSFORM RETORNA O DATASET ALTERADO --> CONVEM FAZER COPIAS, PARA MANTER OS DADOS ORIGINAIS SEGUROS
+
+    return dataset

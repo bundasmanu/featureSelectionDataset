@@ -45,29 +45,44 @@ def main():
     print(dataset.getDataset().Y)
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
+    # #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
+    svmLeaner1 =SVMLearner.SVMLearner(gamma=0.5)
+    learner = svmLeaner1.getLearner()
+    predictions = learner.fit(dataset.getDataset().X[12:18],dataset.getDataset().Y[12:18]).predict(dataset.getDataset().X)
+    print(Orange.evaluation.scoring.confusion_matrix(dataset.getDataset().Y, predictions))
+    print(ut.print_results(dataset.getDataset().Y,predictions))
+
+    '''
+        APLICACAO DO KMEANS ALGORITHM
+    '''
+
     #IDENTIFICACAO DO MELHOR VALOR DE K (CLUSTERS), TENDO EM CONTA UMA GAMA DE CLUSTERS E O DATASET EM ANALISE
     transposeDataset = ut.applyTranspostMatrix(dataset)
     #bestValueofK = ut.getBestValueOfK(dataset)
-    kMeansObject = ut.applyClustering(30, transposeDataset)
+    transposeDataset = ut.applyMinMaxScaler(transposeDataset)
+    print(transposeDataset.getDataset().X)
+    kMeansObject = ut.applyClustering(60, transposeDataset)
     print(kMeansObject.getLearner().cluster_centers_.shape)
     print(kMeansObject.getLearner().labels_.shape)
     print(numpy.argwhere(kMeansObject.getLearner().labels_ == 3))
-    '''closest = pairwise_distances_argmin(kMeansObject.getLearner().cluster_centers_, transposeDataset.getDataset().X)
-    print(closest)'''
     arrayBestFeatures = ut.getBestValuesForCluster(2,kMeansObject,transposeDataset)
-    print(arrayBestFeatures)
+
+    #ARRAY WITH RELEVANT FEATURES --> ARRAY WITH 0'S OR 1'S --> 1'S RELEVANT FEATURES
     myArray = ut.createBinaryNumpyArrayWithReducedFeatures(arrayBestFeatures, dataset)
-    print(myArray.nonzero())
 
-    #OBTENCAO DAS MELHORES FEATURES DE CADA CLUSTER
+    #GET DATASET WITH FEATURE REDUCTION --> AFTER APPLY KMEANS ALGORITHM
+    reducedDataset = ut.createCloneOfReducedDataset(dataset, myArray)
 
-    # #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
-    # svmLeaner =SVMLearner.SVMLearner(gamma=0.5)
-    # learner = svmLeaner.getLearner()
-    # predictions = learner.fit(dataset.getDataset().X[12:18],dataset.getDataset().Y[12:18]).predict(dataset.getDataset().X)
-    # print(Orange.evaluation.scoring.confusion_matrix(dataset.getDataset().Y, predictions))
-    # print(ut.print_results(dataset.getDataset().Y,predictions))
-    #
+    svmLeaner2 =SVMLearner.SVMLearner(gamma=0.5)
+    learner = svmLeaner2.getLearner()
+    predictions = learner.fit(reducedDataset.getDataset().X[12:18],reducedDataset.getDataset().Y[12:18]).predict(reducedDataset.getDataset().X)
+    print(Orange.evaluation.scoring.confusion_matrix(reducedDataset.getDataset().Y, predictions))
+    print(ut.print_results(reducedDataset.getDataset().Y,predictions))
+
+    '''
+        APLICACAO DO BINARY PSO
+    '''
+
     # '''
     #     ABERTURA DA APLICACAO
     #     app = QApplication(sys.argv)
