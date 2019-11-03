@@ -48,14 +48,16 @@ def main():
     #IDENTIFICACAO DO MELHOR VALOR DE K (CLUSTERS), TENDO EM CONTA UMA GAMA DE CLUSTERS E O DATASET EM ANALISE
     transposeDataset = ut.applyTranspostMatrix(dataset)
     #bestValueofK = ut.getBestValueOfK(dataset)
-    kMeansObject = ut.applyClustering(300, transposeDataset)
+    kMeansObject = ut.applyClustering(30, transposeDataset)
     print(kMeansObject.getLearner().cluster_centers_.shape)
     print(kMeansObject.getLearner().labels_.shape)
-    closest = pairwise_distances_argmin(kMeansObject.getLearner().cluster_centers_, transposeDataset.getDataset().X)
-    print(closest)
-    print(ut.getBestValuesForCluster(10,kMeansObject,transposeDataset))
-    myArray = ut.createBinaryNumpyArrayWithReducedFeatures(closest, dataset)
-    print(myArray)
+    print(numpy.argwhere(kMeansObject.getLearner().labels_ == 3))
+    '''closest = pairwise_distances_argmin(kMeansObject.getLearner().cluster_centers_, transposeDataset.getDataset().X)
+    print(closest)'''
+    arrayBestFeatures = ut.getBestValuesForCluster(2,kMeansObject,transposeDataset)
+    print(arrayBestFeatures)
+    myArray = ut.createBinaryNumpyArrayWithReducedFeatures(arrayBestFeatures, dataset)
+    print(myArray.nonzero())
 
     #OBTENCAO DAS MELHORES FEATURES DE CADA CLUSTER
 

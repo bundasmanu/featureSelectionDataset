@@ -13,6 +13,8 @@ import sklearn.metrics
 import AbstractLearner, KMeansLearner
 from sklearn.metrics import silhouette_score
 import scipy.spatial.distance as sdist
+from nltk import flatten
+from sklearn.preprocessing import MinMaxScaler
 
 CLASSIFIER = 'classifier'
 DATASET = 'dataset'
@@ -270,6 +272,21 @@ def applyClustering(clusterNumber, dataset : UtilsDataset.UtilsDataset):
 
     return kmeans
 
+def findLabelWithSpecificDistance(distance, kMeans : KMeansLearner.KMeansLearner, dataset: UtilsDataset.UtilsDataset):
+    '''
+    :param distance : distancia
+    :param kMeans: objeto kmeans
+    :param dataset: dataset
+    :return: retorno feature (posicao) relativa à distancia passada por argumento
+    '''
+
+    for i in range(len(kMeans.getLearner().cluster_centers_)):
+        for j in range(len(kMeans.getLearner().labels_)):
+            if i == kMeans.getLearner().labels_[j]:
+                if (np.linalg.norm(dataset.getDataset().X[j] - kMeans.getLearner().cluster_centers_[i]) == distance):
+                    return j
+
+
 def getBestValuesForCluster(manyValues, kMeans : KMeansLearner.KMeansLearner, dataset: UtilsDataset.UtilsDataset):
     '''
 
@@ -279,15 +296,29 @@ def getBestValuesForCluster(manyValues, kMeans : KMeansLearner.KMeansLearner, da
     '''
     #Fonte: https://stackoverflow.com/questions/51309526/kmeans-euclidean-distance-to-each-centroid-avoid-splitting-features-from-rest-of
 
+    controlNumberValues = 0
+    arrayBestFeaturesPerCluster = [[None]*manyValues for i in range(30)]
+    arrayPositionsPerCluster = [[None]*manyValues for i in range(30)]
+
     for i in range(len(kMeans.getLearner().cluster_centers_)):
+        controlNumberValues = 0
         for j in range(len(kMeans.getLearner().labels_)):
             if i == kMeans.getLearner().labels_[j]:
                 distance = np.linalg.norm(dataset.getDataset().X[j]- kMeans.getLearner().cluster_centers_[i])
-                print(distance)
-                print(i)
-                print(j) #OBJETIVO OBTER OS MENORES VALORES
+                if (len(arrayBestFeaturesPerCluster[i]) - arrayBestFeaturesPerCluster[i].count(None))< manyValues: #SE AINDA TEM ESPACO COLOCA LA A DISTANCIA
+                    arrayBestFeaturesPerCluster[i][controlNumberValues] = distance
+                    arrayPositionsPerCluster[i][controlNumberValues] = j
+                else:
+                    arrayBestFeaturesPerCluster[i].sort() #COLOCO POR ORDEM OS VALORES, OU SEJA O MELHOR NO INICIO E O PIOR NO FIM
+                    if arrayBestFeaturesPerCluster[i][controlNumberValues] > distance: #SE O NOVO VALOR FOR MENOR, QUE O PIOR, COLOCO-O LÁ
+                        indexWorstPosition = findLabelWithSpecificDistance(arrayBestFeaturesPerCluster[i][controlNumberValues], kMeans,dataset) #OBTENCAO DO INDICE COM A PIOR POSICAO
+                        indexToRemove = arrayPositionsPerCluster[i].index(indexWorstPosition) #OBTENCAO DO INDICE ONDE ESTA A POSICAO COM PIOR DISTANCIA
+                        arrayPositionsPerCluster[i][indexToRemove] = j
+                        arrayBestFeaturesPerCluster[i][controlNumberValues] = distance #ATUALIZO A DISTANCIA
+                if controlNumberValues < manyValues-1: #APENAS ITERO A VARIAVEL QUANDO NAO TENHO AINDA OS ELEMENTOS QUE PRETENDO, CASO CONTRARIO FICA SEMPRE NA ULTIMA POSICAO
+                    controlNumberValues+=1
 
-
+    return arrayPositionsPerCluster
 
 '''
     TRANSFORM DATASET IN REDUCED DATASET --> USING CLONE FUNCTION
@@ -300,10 +331,26 @@ def createBinaryNumpyArrayWithReducedFeatures(relevantFeatures, dataset: UtilsDa
     :return: numpy binary array with 0 or 1 --> 1 relevant features
     '''
 
-    #oneDArray = list(relevantFeatures.flat)
+    oneDArray = flatten(relevantFeatures) #PASSAGEM DE 2D ARRAY PARA 1D ARRAY
 
+    oneDArray = [i for i in oneDArray if i is not None]#ELIMINACAO DE POSSIVEIS NONE'S QUE POSSAM EXISTIR
+    print(oneDArray)
     emptyArray = np.zeros(dataset.getDataset().X.shape[1]) #PASSO O DATASET OFICIAL E NAO O TRANSPOSTO
 
-    emptyArray = np.insert(emptyArray,relevantFeatures,1)
+    for i in relevantFeatures:
+        emptyArray[i] = 1
 
     return emptyArray
+
+'''
+    APPLY SCALER TO FEATURES OF DATASET, USING MINMAXSCALER
+'''
+
+def applyMinMaxScaler(dataset : UtilsDataset.UtilsDataset):
+
+    scaler = MinMaxScaler()
+
+    scaler.fit(dataset.getDataset().X) #COMPUTACAO DOS VALORES DE MIN E MAX A UTILIZAR NA COMPUTACAO
+
+    scaler.transform(dataset.getDataset().X) #APLICACAO DA ESCALA AS FEATURES DO DATASET, DE ACORDO COM O RANGE ESTABELECIDO NO FIT
+    #O SCALER TRANSFORM RETORNA O DATASET ALTERADO --> CONVEM FAZER COPIAS, PARA MANTER OS DADOS ORIGINAIS SEGUROS
