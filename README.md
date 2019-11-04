@@ -1,2 +1,2 @@
 # featureSelectionDataset
-Use of PSO and ACO as optimization techniques in feature selection
+Use of PSO and KMeans as optimization techniques in feature selection
