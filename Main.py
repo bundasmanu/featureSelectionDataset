@@ -17,6 +17,12 @@ import MainWindow
 import KMeansLearner
 from sklearn.metrics import pairwise_distances_argmin_min, pairwise_distances_argmin
 
+
+'''
+    OPINIAO PESSOAL DA UTILIZACAO DE CLUSTERING NA SELECCAO DE FEATURES
+    https://www.quora.com/How-can-I-use-k-means-for-feature-extraction
+'''
+
 def main():
 
     '''
