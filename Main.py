@@ -33,7 +33,8 @@ def main():
     '''
 
     '''
-        DEFINICAO INICIAL DO DATASET E DO CLASSIFICADOR UTILIZADO PARA TREINO E PREVISAO
+        DEFINICAO INICIAL DO DATASET E DO CLASSIFICADOR UTILIZADO PARA TREINO E PREVISAO,
+        E DE OUTROS DADOS RELEVANTES
     '''
 
     data = Orange.data.Table("./datasetExplore")
@@ -50,16 +51,22 @@ def main():
     #print(dataset.getDataset().Y)
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
+    examplesPredict = [0,1,22,23]
+    examplesTraining = range(2,22)
+
+    svmLeaner1 =SVMLearner.SVMLearner(gamma=0.5)
+    learner = svmLeaner1.getLearner()
+
     '''
         TREINO E PREVISAO DO DATASET ORIGINAL
     '''
 
-    # #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
-    svmLeaner1 =SVMLearner.SVMLearner(gamma=0.5)
-    learner = svmLeaner1.getLearner()
-    predictions = learner.fit(dataset.getDataset().X[2:22],dataset.getDataset().Y[2:22]).predict(dataset.getDataset().X)
-    print(Orange.evaluation.scoring.confusion_matrix(dataset.getDataset().Y, predictions))
-    print(ut.print_results(dataset.getDataset().Y,predictions))
+    #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
+    listSamplesPredict = ut.getSpecificSamples(dataset, examplesPredict)
+    predictions = learner.fit(dataset.getDataset().X[examplesTraining],dataset.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
+    realValuesPredict = ut.getSpecificOutputsFromDataset(dataset, examplesPredict)
+    print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
+    print(ut.print_results(realValuesPredict,predictions))
 
     '''
         APLICACAO DO KMEANS ALGORITHM
@@ -81,11 +88,11 @@ def main():
     #GET DATASET WITH FEATURE REDUCTION --> AFTER APPLY KMEANS ALGORITHM
     reducedDataset = ut.createCloneOfReducedDataset(dataset, myArray)
 
-    svmLeaner2 =SVMLearner.SVMLearner(gamma=0.5)
-    learner = svmLeaner2.getLearner()
-    predictions = learner.fit(reducedDataset.getDataset().X[2:22],reducedDataset.getDataset().Y[2:22]).predict(reducedDataset.getDataset().X)
-    print(Orange.evaluation.scoring.confusion_matrix(reducedDataset.getDataset().Y, predictions))
-    print(ut.print_results(reducedDataset.getDataset().Y,predictions))
+    listSamplesPredict = ut.getSpecificSamples(reducedDataset, examplesPredict)
+    predictions = learner.fit(reducedDataset.getDataset().X[examplesTraining],reducedDataset.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
+    realValuesPredict = ut.getSpecificOutputsFromDataset(reducedDataset, examplesPredict)
+    print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
+    print(ut.print_results(realValuesPredict,predictions))
 
     '''
         APLICACAO DO BINARY PSO
@@ -124,9 +131,8 @@ def main():
     '''
 
     #TREINO E PREVISAO, APENAS COM AS FEATURES SELECCIONADAS
-    examplesPredict = [0,1,22,23]
     listSamplesPredict = ut.getSpecificSamples(deepCopy, examplesPredict)
-    predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[2:22],deepCopy.getDataset().Y[2:22]).predict(listSamplesPredict)
+    predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[examplesTraining],deepCopy.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
     realValuesPredict = ut.getSpecificOutputsFromDataset(deepCopy, examplesPredict)
     print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictionsAfterFeatureSelection))
     print(ut.print_results(realValuesPredict,predictionsAfterFeatureSelection))
