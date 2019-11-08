@@ -47,8 +47,8 @@ def main():
 
     #REFORMULACAO DO CONTEUDO DA TABLE ORANGE, PRESENTE NO OBJETO UTILS DATASET
     dataset= ut.transformMatrixDatasetInCorrectFormat(dataset)
-    print(dataset.getDataset().X.shape)
-    print(dataset.getDataset().Y)
+    #print(dataset.getDataset().X.shape)
+    #print(dataset.getDataset().Y)
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
     # #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
@@ -61,18 +61,17 @@ def main():
     '''
         APLICACAO DO KMEANS ALGORITHM
     '''
-
+    print("\nLoading K-Means\n")
     #IDENTIFICACAO DO MELHOR VALOR DE K (CLUSTERS), TENDO EM CONTA UMA GAMA DE CLUSTERS E O DATASET EM ANALISE
     transposeDataset = ut.applyTranspostMatrix(dataset)
     #bestValueofK = ut.getBestValueOfK(dataset)
     transposeDataset = ut.applyMinMaxScaler(transposeDataset)
-    print(transposeDataset.getDataset().X)
+    #print(transposeDataset.getDataset().X)
     kMeansObject = ut.applyClustering(60, transposeDataset)
-    print(kMeansObject.getLearner().cluster_centers_.shape)
-    print(kMeansObject.getLearner().labels_.shape)
-    print(numpy.argwhere(kMeansObject.getLearner().labels_ == 3))
+    #print(kMeansObject.getLearner().cluster_centers_.shape)
+    #print(kMeansObject.getLearner().labels_.shape)
+    #print(numpy.argwhere(kMeansObject.getLearner().labels_ == 3))
     arrayBestFeatures = ut.getBestValuesForCluster(2,kMeansObject,transposeDataset)
-
     #ARRAY WITH RELEVANT FEATURES --> ARRAY WITH 0'S OR 1'S --> 1'S RELEVANT FEATURES
     myArray = ut.createBinaryNumpyArrayWithReducedFeatures(arrayBestFeatures, dataset)
 
@@ -81,14 +80,14 @@ def main():
 
     svmLeaner2 =SVMLearner.SVMLearner(gamma=0.5)
     learner = svmLeaner2.getLearner()
-    predictions = learner.fit(reducedDataset.getDataset().X[12:18],reducedDataset.getDataset().Y[12:18]).predict(reducedDataset.getDataset().X)
+    predictions = learner.fit(reducedDataset.getDataset().X[2:22],reducedDataset.getDataset().Y[2:22]).predict(reducedDataset.getDataset().X)
     print(Orange.evaluation.scoring.confusion_matrix(reducedDataset.getDataset().Y, predictions))
     print(ut.print_results(reducedDataset.getDataset().Y,predictions))
 
     '''
         APLICACAO DO BINARY PSO
     '''
-
+    print("\nLoading BPSO\n")
     # '''
     #     ABERTURA DA APLICACAO
     #     app = QApplication(sys.argv)
@@ -104,7 +103,7 @@ def main():
 
     #dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
     dimensionsOfProblem = reducedDataset.getDataset().X.shape[1]
-    initPos = ut.createArrayInitialPos(n_particles,dimensionsOfProblem,dimensionsOfProblem-20) #COLOCANDO UM NUMERO BAIXO NO INIT_POS, PERCEBEMOS QUE AQUI A ACCURACY JA VAI ALTERANDO, POIS COMO EXISTEM POUCAS AMOSTRAS, A ACCURACY REVELA-SE QUASE SEMPRE IGUAL, MESMO TREINANDO DUAS AMOSTRAS COM ATRIBUTOS SEMELHANTES E OUTPUTS DISTINTOS
+    initPos = ut.createArrayInitialPos(n_particles,dimensionsOfProblem,dimensionsOfProblem-4) #COLOCANDO UM NUMERO BAIXO NO INIT_POS, PERCEBEMOS QUE AQUI A ACCURACY JA VAI ALTERANDO, POIS COMO EXISTEM POUCAS AMOSTRAS, A ACCURACY REVELA-SE QUASE SEMPRE IGUAL, MESMO TREINANDO DUAS AMOSTRAS COM ATRIBUTOS SEMELHANTES E OUTPUTS DISTINTOS
     optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms, init_pos=initPos)
     bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 20, dataset= reducedDataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
 
@@ -117,8 +116,12 @@ def main():
     deepCopy = ut.createCloneOfReducedDataset(reducedDataset,bestPos)
     print(deepCopy.getDataset().X.shape)
 
+    '''
+        PREVISAO FINAL DAS 4 AMOSTRAS QUE NAO FORAM CONSIDERADAS NO TREINO DA APLICACAO DOS ALGORITMOS ANTERIORES
+    '''
+
     #TREINO E PREVISAO, APENAS COM AS FEATURES SELECCIONADAS
-    predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[12:18],deepCopy.getDataset().Y[12:18]).predict(deepCopy.getDataset().X)
+    predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[2:22],deepCopy.getDataset().Y[2:22]).predict(deepCopy.getDataset().X)
     print(Orange.evaluation.scoring.confusion_matrix(deepCopy.getDataset().Y, predictionsAfterFeatureSelection))
     print(ut.print_results(deepCopy.getDataset().Y,predictionsAfterFeatureSelection))
 

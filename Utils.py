@@ -334,10 +334,10 @@ def createBinaryNumpyArrayWithReducedFeatures(relevantFeatures, dataset: UtilsDa
     oneDArray = flatten(relevantFeatures) #PASSAGEM DE 2D ARRAY PARA 1D ARRAY
 
     oneDArray = [i for i in oneDArray if i is not None]#ELIMINACAO DE POSSIVEIS NONE'S QUE POSSAM EXISTIR
-    print(oneDArray)
+    #print(oneDArray)
     emptyArray = np.zeros(dataset.getDataset().X.shape[1]) #PASSO O DATASET OFICIAL E NAO O TRANSPOSTO
 
-    for i in relevantFeatures:
+    for i in oneDArray:
         emptyArray[i] = 1
 
     return emptyArray
