@@ -139,11 +139,18 @@ def createCloneOfReducedDataset(dataset : UtilsDataset.UtilsDataset, bestPos):
 '''
 def print_results(real, predictions):
 
-    loss = sklearn.metrics.hamming_loss(real,predictions)
+    '''
+        I need to pass average and labels arguments to metrics, because i'm just trying to predict x samples, and not everything
+        Link: https://stackoverflow.com/questions/43162506/undefinedmetricwarning-f-score-is-ill-defined-and-being-set-to-0-0-in-labels-wi/47285662
+    '''
+
+    print(real)
+    print(predictions)
+    loss = sklearn.metrics.f1_score(real,predictions, average='weighted', labels=np.unique(predictions))
     accuracy = sklearn.metrics.accuracy_score(real,predictions)
-    precision = sklearn.metrics.precision_score(real,predictions)
-    recall = sklearn.metrics.recall_score(real,predictions)
-    print('loss=', loss)
+    precision = sklearn.metrics.precision_score(real,predictions, average='weighted', labels=np.unique(predictions))
+    recall = sklearn.metrics.recall_score(real,predictions, average='weighted', labels=np.unique(predictions))
+    print('f1_score=', loss)
     print('accuracy=', accuracy)
     print ('precision=', precision)
     print ('recall=', recall)
@@ -356,3 +363,27 @@ def applyMinMaxScaler(dataset : UtilsDataset.UtilsDataset):
     #O SCALER TRANSFORM RETORNA O DATASET ALTERADO --> CONVEM FAZER COPIAS, PARA MANTER OS DADOS ORIGINAIS SEGUROS
 
     return dataset
+
+def getSpecificSamples(dataset : UtilsDataset.UtilsDataset, indexOfSamples):
+    '''
+
+    :param dataset: dataset of problem
+    :param indexOfSamples: indexes that i want from my dataset
+    :return: numpy array with specific data (specific samples)
+    '''
+
+    listSpecificSamples = np.array([dataset.getDataset().X[i] for i in indexOfSamples])
+
+    return listSpecificSamples
+
+def getSpecificOutputsFromDataset(dataset : UtilsDataset.UtilsDataset, indexOfOutputs):
+    '''
+
+    :param dataset: dataset of problem
+    :param indexOfOutputs: list of indexes of outputs that i want
+    :return: numpy array with values from specific indexes of outputs
+    '''
+
+    listSpecificOutputs = np.array([dataset.getDataset().Y[i] for i in indexOfOutputs])
+
+    return listSpecificOutputs

@@ -32,6 +32,10 @@ def main():
         print(ds.X.shape)
     '''
 
+    '''
+        DEFINICAO INICIAL DO DATASET E DO CLASSIFICADOR UTILIZADO PARA TREINO E PREVISAO
+    '''
+
     data = Orange.data.Table("./datasetExplore")
     factory = UtilsFactory.UtilsFactory()
     dataset = factory.getUtil(name=ut.DATASET).getDataset(data)
@@ -40,21 +44,20 @@ def main():
     #print(data.domain)
     #print(data.X[0][9470:])
 
-    '''
-    Objeto Factory
-    cs = UtilsFactory.UtilsFactory().getUtil(ut.PSO)
-    '''
-
     #REFORMULACAO DO CONTEUDO DA TABLE ORANGE, PRESENTE NO OBJETO UTILS DATASET
     dataset= ut.transformMatrixDatasetInCorrectFormat(dataset)
     #print(dataset.getDataset().X.shape)
     #print(dataset.getDataset().Y)
     classificador = factory.getUtil(ut.CLASSIFIER).getClassifier(gamma=0.01, vizinhos=5) #CRIACAO DO CLASSIFICADOR
 
+    '''
+        TREINO E PREVISAO DO DATASET ORIGINAL
+    '''
+
     # #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
     svmLeaner1 =SVMLearner.SVMLearner(gamma=0.5)
     learner = svmLeaner1.getLearner()
-    predictions = learner.fit(dataset.getDataset().X[12:18],dataset.getDataset().Y[12:18]).predict(dataset.getDataset().X)
+    predictions = learner.fit(dataset.getDataset().X[2:22],dataset.getDataset().Y[2:22]).predict(dataset.getDataset().X)
     print(Orange.evaluation.scoring.confusion_matrix(dataset.getDataset().Y, predictions))
     print(ut.print_results(dataset.getDataset().Y,predictions))
 
@@ -121,9 +124,12 @@ def main():
     '''
 
     #TREINO E PREVISAO, APENAS COM AS FEATURES SELECCIONADAS
-    predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[2:22],deepCopy.getDataset().Y[2:22]).predict(deepCopy.getDataset().X)
-    print(Orange.evaluation.scoring.confusion_matrix(deepCopy.getDataset().Y, predictionsAfterFeatureSelection))
-    print(ut.print_results(deepCopy.getDataset().Y,predictionsAfterFeatureSelection))
+    examplesPredict = [0,1,22,23]
+    listSamplesPredict = ut.getSpecificSamples(deepCopy, examplesPredict)
+    predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[2:22],deepCopy.getDataset().Y[2:22]).predict(listSamplesPredict)
+    realValuesPredict = ut.getSpecificOutputsFromDataset(deepCopy, examplesPredict)
+    print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictionsAfterFeatureSelection))
+    print(ut.print_results(realValuesPredict,predictionsAfterFeatureSelection))
 
     # '''
     #     FECHO DA APLICACAO
