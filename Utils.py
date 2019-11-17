@@ -144,8 +144,8 @@ def print_results(real, predictions):
         Link: https://stackoverflow.com/questions/43162506/undefinedmetricwarning-f-score-is-ill-defined-and-being-set-to-0-0-in-labels-wi/47285662
     '''
 
-    print(real)
-    print(predictions)
+    print("Real:\t",real)
+    print("Previsoes:\t",predictions)
     loss = sklearn.metrics.f1_score(real,predictions, average='weighted', labels=np.unique(predictions))
     accuracy = sklearn.metrics.accuracy_score(real,predictions)
     precision = sklearn.metrics.precision_score(real,predictions, average='weighted', labels=np.unique(predictions))

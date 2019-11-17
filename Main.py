@@ -16,6 +16,8 @@ from PyQt5.QtWidgets import *
 import MainWindow
 import KMeansLearner
 from sklearn.metrics import pairwise_distances_argmin_min, pairwise_distances_argmin
+from sklearn.model_selection import KFold,cross_val_score,cross_val_predict
+import random
 
 
 '''
@@ -61,12 +63,26 @@ def main():
         TREINO E PREVISAO DO DATASET ORIGINAL
     '''
 
-    #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
+    #APLICACAO DE CROSS VALIDATION
+    dataset = ut.applyMinMaxScaler(dataset)
+    kFold = KFold(n_splits=3, shuffle=True)
+    result = cross_val_score(learner, dataset.getDataset().X[examplesTraining], dataset.getDataset().Y[examplesTraining], cv=kFold, scoring='r2')
+    print(result.mean())
+    predictions = cross_val_predict(learner, dataset.getDataset().X[examplesPredict], dataset.getDataset().Y[examplesPredict], cv=2)
+    print(predictions)
+    learner.fit(dataset.getDataset().X[examplesTraining], dataset.getDataset().Y[examplesTraining])
     listSamplesPredict = ut.getSpecificSamples(dataset, examplesPredict)
-    predictions = learner.fit(dataset.getDataset().X[examplesTraining],dataset.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
+    predictions = learner.predict(listSamplesPredict)
     realValuesPredict = ut.getSpecificOutputsFromDataset(dataset, examplesPredict)
     print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
     print(ut.print_results(realValuesPredict,predictions))
+
+    #EXPERIMENTACAO DE CLASSIFICACAO E PREDICT
+    #listSamplesPredict = ut.getSpecificSamples(dataset, examplesPredict)
+    #predictions = learner.fit(dataset.getDataset().X[examplesTraining],dataset.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
+    #realValuesPredict = ut.getSpecificOutputsFromDataset(dataset, examplesPredict)
+    #print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
+    #print(ut.print_results(realValuesPredict,predictions))
 
     '''
         APLICACAO DO KMEANS ALGORITHM
@@ -88,11 +104,21 @@ def main():
     #GET DATASET WITH FEATURE REDUCTION --> AFTER APPLY KMEANS ALGORITHM
     reducedDataset = ut.createCloneOfReducedDataset(dataset, myArray)
 
-    listSamplesPredict = ut.getSpecificSamples(reducedDataset, examplesPredict)
-    predictions = learner.fit(reducedDataset.getDataset().X[examplesTraining],reducedDataset.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
-    realValuesPredict = ut.getSpecificOutputsFromDataset(reducedDataset, examplesPredict)
-    print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
-    print(ut.print_results(realValuesPredict,predictions))
+    # listSamplesPredict = ut.getSpecificSamples(reducedDataset, examplesPredict)
+    # predictions = learner.fit(reducedDataset.getDataset().X[examplesTraining],reducedDataset.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
+    # realValuesPredict = ut.getSpecificOutputsFromDataset(reducedDataset, examplesPredict)
+    # print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
+    # print(ut.print_results(realValuesPredict,predictions))
+
+    #APLICACAO DE CROSS VALIDATION
+    reducedDataset = ut.applyMinMaxScaler(reducedDataset)
+    kFold = KFold(n_splits=4, shuffle=True)
+    result = cross_val_score(learner, reducedDataset.getDataset().X, reducedDataset.getDataset().Y, cv=kFold, scoring='r2')
+    print(result.mean())
+    predictions = cross_val_predict(learner, reducedDataset.getDataset().X[examplesPredict], reducedDataset.getDataset().Y[examplesPredict], cv=2)
+    print(predictions)
+    print(Orange.evaluation.scoring.confusion_matrix(reducedDataset.getDataset().Y[examplesPredict], predictions))
+    print(ut.print_results(reducedDataset.getDataset().Y[examplesPredict],predictions))
 
     '''
         APLICACAO DO BINARY PSO
@@ -131,6 +157,7 @@ def main():
     '''
 
     #TREINO E PREVISAO, APENAS COM AS FEATURES SELECCIONADAS
+    deepCopy = ut.applyMinMaxScaler(deepCopy)
     listSamplesPredict = ut.getSpecificSamples(deepCopy, examplesPredict)
     predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[examplesTraining],deepCopy.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
     realValuesPredict = ut.getSpecificOutputsFromDataset(deepCopy, examplesPredict)
