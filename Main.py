@@ -66,10 +66,12 @@ def main():
     #APLICACAO DE CROSS VALIDATION
     dataset = ut.applyMinMaxScaler(dataset)
     kFold = KFold(n_splits=3, shuffle=True)
+    print("Score e Previsoes Iniciais - Cross Validation\n")
     result = cross_val_score(learner, dataset.getDataset().X[examplesTraining], dataset.getDataset().Y[examplesTraining], cv=kFold, scoring='r2')
-    print(result.mean())
+    print("Media Score:\t",result.mean())
     predictions = cross_val_predict(learner, dataset.getDataset().X[examplesPredict], dataset.getDataset().Y[examplesPredict], cv=2)
-    print(predictions)
+    print("Prediction:\t",predictions)
+    print("\nSVM\n")
     learner.fit(dataset.getDataset().X[examplesTraining], dataset.getDataset().Y[examplesTraining])
     listSamplesPredict = ut.getSpecificSamples(dataset, examplesPredict)
     predictions = learner.predict(listSamplesPredict)
@@ -112,13 +114,21 @@ def main():
 
     #APLICACAO DE CROSS VALIDATION
     reducedDataset = ut.applyMinMaxScaler(reducedDataset)
+    print("Score e Previsoes Iniciais - Cross Validation\n")
     kFold = KFold(n_splits=4, shuffle=True)
     result = cross_val_score(learner, reducedDataset.getDataset().X, reducedDataset.getDataset().Y, cv=kFold, scoring='r2')
-    print(result.mean())
+    print("Media Score:\t",result.mean())
     predictions = cross_val_predict(learner, reducedDataset.getDataset().X[examplesPredict], reducedDataset.getDataset().Y[examplesPredict], cv=2)
-    print(predictions)
+    print("Prediction:\t",predictions)
     print(Orange.evaluation.scoring.confusion_matrix(reducedDataset.getDataset().Y[examplesPredict], predictions))
     print(ut.print_results(reducedDataset.getDataset().Y[examplesPredict],predictions))
+    print("\nSVM\n")
+    learner.fit(reducedDataset.getDataset().X[examplesTraining], reducedDataset.getDataset().Y[examplesTraining])
+    listSamplesPredict = ut.getSpecificSamples(reducedDataset, examplesPredict)
+    predictions = learner.predict(listSamplesPredict)
+    realValuesPredict = ut.getSpecificOutputsFromDataset(reducedDataset, examplesPredict)
+    print(Orange.evaluation.scoring.confusion_matrix(realValuesPredict, predictions))
+    print(ut.print_results(realValuesPredict,predictions))
 
     '''
         APLICACAO DO BINARY PSO
@@ -158,6 +168,7 @@ def main():
 
     #TREINO E PREVISAO, APENAS COM AS FEATURES SELECCIONADAS
     deepCopy = ut.applyMinMaxScaler(deepCopy)
+    print("\nFinal Results: SVM\n")
     listSamplesPredict = ut.getSpecificSamples(deepCopy, examplesPredict)
     predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[examplesTraining],deepCopy.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
     realValuesPredict = ut.getSpecificOutputsFromDataset(deepCopy, examplesPredict)
