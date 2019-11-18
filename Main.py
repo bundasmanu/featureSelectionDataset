@@ -18,6 +18,7 @@ import KMeansLearner
 from sklearn.metrics import pairwise_distances_argmin_min, pairwise_distances_argmin
 from sklearn.model_selection import KFold,cross_val_score,cross_val_predict
 import random
+from sklearn.model_selection import GridSearchCV
 
 
 '''
@@ -65,11 +66,11 @@ def main():
 
     #APLICACAO DE CROSS VALIDATION
     dataset = ut.applyMinMaxScaler(dataset)
-    kFold = KFold(n_splits=3, shuffle=True)
+    kFold = KFold(n_splits=4, shuffle=True)
     print("Score e Previsoes Iniciais - Cross Validation\n")
-    result = cross_val_score(learner, dataset.getDataset().X[examplesTraining], dataset.getDataset().Y[examplesTraining], cv=kFold, scoring='r2')
+    result = cross_val_score(learner, dataset.getDataset().X, dataset.getDataset().Y, cv=kFold, scoring='r2')
     print("Media Score:\t",result.mean())
-    predictions = cross_val_predict(learner, dataset.getDataset().X[examplesPredict], dataset.getDataset().Y[examplesPredict], cv=2)
+    predictions = cross_val_predict(learner, dataset.getDataset().X, dataset.getDataset().Y, cv=3)
     print("Prediction:\t",predictions)
     print("\nSVM\n")
     learner.fit(dataset.getDataset().X[examplesTraining], dataset.getDataset().Y[examplesTraining])
@@ -114,15 +115,13 @@ def main():
 
     #APLICACAO DE CROSS VALIDATION
     reducedDataset = ut.applyMinMaxScaler(reducedDataset)
-    print("Score e Previsoes Iniciais - Cross Validation\n")
+    print("Score e Previsoes KMeans - Cross Validation")
     kFold = KFold(n_splits=4, shuffle=True)
     result = cross_val_score(learner, reducedDataset.getDataset().X, reducedDataset.getDataset().Y, cv=kFold, scoring='r2')
     print("Media Score:\t",result.mean())
-    predictions = cross_val_predict(learner, reducedDataset.getDataset().X[examplesPredict], reducedDataset.getDataset().Y[examplesPredict], cv=2)
+    predictions = cross_val_predict(learner, reducedDataset.getDataset().X, reducedDataset.getDataset().Y, cv=3)
     print("Prediction:\t",predictions)
-    print(Orange.evaluation.scoring.confusion_matrix(reducedDataset.getDataset().Y[examplesPredict], predictions))
-    print(ut.print_results(reducedDataset.getDataset().Y[examplesPredict],predictions))
-    print("\nSVM\n")
+    print("\nSVM")
     learner.fit(reducedDataset.getDataset().X[examplesTraining], reducedDataset.getDataset().Y[examplesTraining])
     listSamplesPredict = ut.getSpecificSamples(reducedDataset, examplesPredict)
     predictions = learner.predict(listSamplesPredict)
@@ -141,8 +140,8 @@ def main():
     # '''
 
     #DEFINICAO DO ALGORITMO PSO
-    n_particles = 20
-    psoArgs = {UtilsPSO.UtilsPSO.INERCIA: 0.9, UtilsPSO.UtilsPSO.C1 : 1.4, UtilsPSO.UtilsPSO.C2 : 1.4, UtilsPSO.UtilsPSO.ALPHA : 0.88, UtilsPSO.UtilsPSO.NEIGHBORS : n_particles, 'p': 2} #p não é relevante, visto que todas as particulas se veem umas as outras, o p representa a distancia entre cada uma das particulas
+    n_particles = 50
+    psoArgs = {UtilsPSO.UtilsPSO.INERCIA: 0.9, UtilsPSO.UtilsPSO.C1 : 1.4, UtilsPSO.UtilsPSO.C2 : 1.4, UtilsPSO.UtilsPSO.ALPHA : 0.80, UtilsPSO.UtilsPSO.NEIGHBORS : n_particles, 'p': 2} #p não é relevante, visto que todas as particulas se veem umas as outras, o p representa a distancia entre cada uma das particulas
 
     psoAlgorithm = factory.getUtil(ut.PSO).getPso(**psoArgs)
     optionsPySwarms = {'c1' : psoAlgorithm.getC1(), 'c2' : psoAlgorithm.getC2(), 'w' : psoAlgorithm.getInercia(), 'k' : psoArgs.get(UtilsPSO.UtilsPSO.NEIGHBORS), 'p' : psoArgs.get('p')}
@@ -150,8 +149,8 @@ def main():
     #dimensionsOfProblem = dataset.getDataset().X.shape[1] #FEATURES DO DATASET
     dimensionsOfProblem = reducedDataset.getDataset().X.shape[1]
     initPos = ut.createArrayInitialPos(n_particles,dimensionsOfProblem,dimensionsOfProblem-4) #COLOCANDO UM NUMERO BAIXO NO INIT_POS, PERCEBEMOS QUE AQUI A ACCURACY JA VAI ALTERANDO, POIS COMO EXISTEM POUCAS AMOSTRAS, A ACCURACY REVELA-SE QUASE SEMPRE IGUAL, MESMO TREINANDO DUAS AMOSTRAS COM ATRIBUTOS SEMELHANTES E OUTPUTS DISTINTOS
-    optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms, init_pos=initPos)
-    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 20, dataset= reducedDataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
+    optimizer = ps.discrete.BinaryPSO(n_particles=n_particles, dimensions=dimensionsOfProblem, options=optionsPySwarms)
+    bestCost, bestPos = optimizer.optimize(psoAlgorithm.aplicarFuncaoObjetivoTodasParticulas, 200, dataset= reducedDataset, classifier=classificador, alpha=psoAlgorithm.getAlpha())
 
     #CONTAGEM DE QUANTAS FEATURES SAO RELEVANTES
     bestPos = ut.listToNumpy(bestPos)
@@ -168,6 +167,14 @@ def main():
 
     #TREINO E PREVISAO, APENAS COM AS FEATURES SELECCIONADAS
     deepCopy = ut.applyMinMaxScaler(deepCopy)
+    kFold = KFold(n_splits=4, shuffle=True)
+    result = cross_val_score(learner, deepCopy.getDataset().X, deepCopy.getDataset().Y, cv=kFold, scoring='r2')
+    print("Media Score:\t",result.mean())
+    predictions = cross_val_predict(learner, deepCopy.getDataset().X, deepCopy.getDataset().Y, cv=3)
+    print("Real:\t",deepCopy.getDataset().Y)
+    print("Prediction:\t",predictions)
+    print(Orange.evaluation.scoring.confusion_matrix(deepCopy.getDataset().Y, predictions))
+    print(ut.print_results(deepCopy.getDataset().Y,predictions))
     print("\nFinal Results: SVM\n")
     listSamplesPredict = ut.getSpecificSamples(deepCopy, examplesPredict)
     predictionsAfterFeatureSelection = learner.fit(deepCopy.getDataset().X[examplesTraining],deepCopy.getDataset().Y[examplesTraining]).predict(listSamplesPredict)
