@@ -3,7 +3,7 @@ attrs==19.3.0
 biopython==1.74
 Bottleneck==1.2.1
 CacheControl==0.12.5
-certifi==2019.9.11
+certifi==2022.12.7
 chardet==3.0.4
 commonmark==0.9.1
 cycler==0.10.0
